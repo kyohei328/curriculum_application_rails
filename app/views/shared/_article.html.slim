@@ -20,7 +20,8 @@
       ul.list-inline
       - article.tags.each do |tag|
         li.list-inline-item = link_to tag.name, tag_path(tag.slug)
-
+        
+  / - binding.pry
   article.article
     == article.body
 
