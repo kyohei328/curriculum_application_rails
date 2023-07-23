@@ -70,9 +70,9 @@ class Admin::ArticlesController < ApplicationController
     @ap = params.require(:article).permit(
       :title, :description, :slug, :state, :published_at, :eye_catch, :category_id, :author_id, tag_ids: []
     )
-    if @ap[:state] == 'published' && @ap[:published_at].to_time >= Time.current
+    if @ap[:state] == 'published' && @ap[:published_at].in_time_zone >= Time.current
       @ap[:state] = 'publish_wait'
-    elsif @ap[:state] == 'publish_wait' && @ap[:published_at].to_time <= Time.current
+    elsif @ap[:state] == 'publish_wait' && @ap[:published_at].in_time_zone <= Time.current
       @ap[:state] = 'published'
     end
   end
