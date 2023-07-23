@@ -2,6 +2,7 @@ class Admin::ArticlesController < ApplicationController
   layout 'admin'
 
   before_action :set_article, only: %i[edit update destroy]
+  before_action :update_article_params, only: %i[update]
 
   def index
     authorize(Article)
@@ -33,8 +34,8 @@ class Admin::ArticlesController < ApplicationController
 
   def update
     authorize(@article)
-
-    if @article.update(article_params)
+        # binding.pry
+    if @article.update(@ap)
       flash[:notice] = '更新しました'
       redirect_to edit_admin_article_path(@article.uuid)
     else
@@ -64,5 +65,18 @@ class Admin::ArticlesController < ApplicationController
 
   def set_article
     @article = Article.find_by!(uuid: params[:uuid])
+  end
+
+  def update_article_params
+    @ap = params.require(:article).permit(
+      :title, :description, :slug, :state, :published_at, :eye_catch, :category_id, :author_id, tag_ids: []
+    )
+    # binding.pry
+    # @publish_day = @ap[:published_at].to_datetime.new_offset('+09:00')
+        if @ap[:state] == 'published' && @ap[:published_at].to_time >= Time.current
+          @ap[:state] = 'publish_wait'
+        elsif @ap[:state] == 'publish_wait' &&  @ap[:published_at].to_time <= Time.current
+          @ap[:state] = 'published'
+        end
   end
 end
