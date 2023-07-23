@@ -72,7 +72,6 @@ class Admin::ArticlesController < ApplicationController
       :title, :description, :slug, :state, :published_at, :eye_catch, :category_id, :author_id, tag_ids: []
     )
     # binding.pry
-    # @publish_day = @ap[:published_at].to_datetime.new_offset('+09:00')
         if @ap[:state] == 'published' && @ap[:published_at].to_time >= Time.current
           @ap[:state] = 'publish_wait'
         elsif @ap[:state] == 'publish_wait' &&  @ap[:published_at].to_time <= Time.current
