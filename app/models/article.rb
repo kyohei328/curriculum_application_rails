@@ -90,4 +90,3 @@ class Article < ApplicationRecord
     @prev_article ||= Article.viewable.order(published_at: :desc).find_by('published_at < ?', published_at)
   end
 end
-

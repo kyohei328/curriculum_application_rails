@@ -34,7 +34,6 @@ class Admin::ArticlesController < ApplicationController
 
   def update
     authorize(@article)
-        # binding.pry
     if @article.update(@ap)
       flash[:notice] = '更新しました'
       redirect_to edit_admin_article_path(@article.uuid)
@@ -71,11 +70,10 @@ class Admin::ArticlesController < ApplicationController
     @ap = params.require(:article).permit(
       :title, :description, :slug, :state, :published_at, :eye_catch, :category_id, :author_id, tag_ids: []
     )
-    # binding.pry
-        if @ap[:state] == 'published' && @ap[:published_at].to_time >= Time.current
-          @ap[:state] = 'publish_wait'
-        elsif @ap[:state] == 'publish_wait' &&  @ap[:published_at].to_time <= Time.current
-          @ap[:state] = 'published'
-        end
+    if @ap[:state] == 'published' && @ap[:published_at].to_time >= Time.current
+      @ap[:state] = 'publish_wait'
+    elsif @ap[:state] == 'publish_wait' && @ap[:published_at].to_time <= Time.current
+      @ap[:state] = 'published'
+    end
   end
 end

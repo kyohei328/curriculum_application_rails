@@ -34,7 +34,7 @@ class Admin::Articles::PublishesController < ApplicationController
   end
 
   def set_state
-    if @article.published_at == nil
+    if @article.published_at.nil?
       @article.published_at = Time.current
       @article.state = :published
     elsif @article.published_at >= Time.current
