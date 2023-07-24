@@ -89,4 +89,20 @@ class Article < ApplicationRecord
   def prev_article
     @prev_article ||= Article.viewable.order(published_at: :desc).find_by('published_at < ?', published_at)
   end
+
+  def assign_publish_state
+    self.state = if self.published_at <= Time.current
+                  :published
+                else
+                  :publish_wait
+                end
+  end
+
+  def massage_on_published
+    if published?
+      '記事を公開しました'
+    elsif publish_wait?
+      '記事を公開待ちにしました'
+    end
+  end
 end

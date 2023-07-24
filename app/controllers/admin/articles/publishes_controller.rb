@@ -5,19 +5,20 @@ class Admin::Articles::PublishesController < ApplicationController
   before_action :set_state
 
   def update
-    # binding.pry
-    # @article.published_at = Time.current unless @article.published_at?
-    # @article.state = :published
+
+    if !@article.published_at?
+      @article.published_at = Time.current
+      @article_state = :published
+    else
+      @article.assign_publish_state
+    end
 
     if @article.valid?
       Article.transaction do
         @article.body = @article.build_body(self)
         @article.save!
       end
-
-      flash[:notice] = '公開しました' if @article.published?
-      flash[:notice] = '公開待ちにしました' if @article.publish_wait?
-
+      flash[:notice] = @article.massage_on_published
       redirect_to edit_admin_article_path(@article.uuid)
     else
       flash.now[:alert] = 'エラーがあります。確認してください。'

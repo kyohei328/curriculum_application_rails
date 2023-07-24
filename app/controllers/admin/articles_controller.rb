@@ -2,7 +2,7 @@ class Admin::ArticlesController < ApplicationController
   layout 'admin'
 
   before_action :set_article, only: %i[edit update destroy]
-  before_action :update_article_params, only: %i[update]
+  # before_action :update_article_params, only: %i[update]
 
   def index
     authorize(Article)
@@ -34,12 +34,21 @@ class Admin::ArticlesController < ApplicationController
 
   def update
     authorize(@article)
-    if @article.update(@ap)
+      @article.assign_attributes(article_params)
+      @article.assign_publish_state unless @article.draft?
+    if @article.save
       flash[:notice] = '更新しました'
       redirect_to edit_admin_article_path(@article.uuid)
     else
       render :edit
     end
+
+    # if @article.update(@ap)
+    #   flash[:notice] = '更新しました'
+    #   redirect_to edit_admin_article_path(@article.uuid)
+    # else
+    #   render :edit
+    # end
   end
 
   def destroy
@@ -66,14 +75,14 @@ class Admin::ArticlesController < ApplicationController
     @article = Article.find_by!(uuid: params[:uuid])
   end
 
-  def update_article_params
-    @ap = params.require(:article).permit(
-      :title, :description, :slug, :state, :published_at, :eye_catch, :category_id, :author_id, tag_ids: []
-    )
-    if @ap[:state] == 'published' && @ap[:published_at].in_time_zone >= Time.current
-      @ap[:state] = 'publish_wait'
-    elsif @ap[:state] == 'publish_wait' && @ap[:published_at].in_time_zone <= Time.current
-      @ap[:state] = 'published'
-    end
-  end
+  # def update_article_params
+  #   @ap = params.require(:article).permit(
+  #     :title, :description, :slug, :state, :published_at, :eye_catch, :category_id, :author_id, tag_ids: []
+  #   )
+  #   if @ap[:state] == 'published' && @ap[:published_at].in_time_zone >= Time.current
+  #     @ap[:state] = 'publish_wait'
+  #   elsif @ap[:state] == 'publish_wait' && @ap[:published_at].in_time_zone <= Time.current
+  #     @ap[:state] = 'published'
+  #   end
+  # end
 end
