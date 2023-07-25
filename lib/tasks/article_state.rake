@@ -1,12 +1,6 @@
 namespace :article_state do
-    desc 'update_article_state'
-    task :update_article_state => :environment do
-        @articles = Article.all
-        @articles.each do |article|
-            if Time.current >= article.published_at
-                article.state = 'published'
-                article.save
-            end
-        end
+    desc '公開町の中で、公開日時が過去になっているものがあれば、ステータスを「公開」に変更されるようにする'
+    task change_to_published: :environment do
+        Article.publish_wait.past_published.find_each(&:published!)
     end
 end
