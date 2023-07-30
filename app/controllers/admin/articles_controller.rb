@@ -6,7 +6,6 @@ class Admin::ArticlesController < ApplicationController
 
   def index
     authorize(Article)
-
     @search_articles_form = SearchArticlesForm.new(search_params)
     @articles = @search_articles_form.search.order(id: :desc).page(params[:page]).per(25)
   end
@@ -34,8 +33,8 @@ class Admin::ArticlesController < ApplicationController
 
   def update
     authorize(@article)
-      @article.assign_attributes(article_params)
-      @article.assign_publish_state unless @article.draft?
+    @article.assign_attributes(article_params)
+    @article.assign_publish_state unless @article.draft?
     if @article.save
       flash[:notice] = '更新しました'
       redirect_to edit_admin_article_path(@article.uuid)
@@ -63,12 +62,12 @@ class Admin::ArticlesController < ApplicationController
 
   def article_params
     params.require(:article).permit(
-      :title, :description, :slug, :state, :published_at, :eye_catch, :category_id, :author_id, tag_ids: []
+      :title, :description, :slug, :state, :published_at, :eye_catch, :category_id, :author_id, tag_id: []
     )
   end
 
   def search_params
-    params[:q]&.permit(:title, :category_id)
+    params[:q]&.permit(:title, :category_id, :author_id, :tag_id, :body)
   end
 
   def set_article

@@ -139,5 +139,7 @@ group :test do
   gem 'fuubar'
   gem 'shoulda-matchers'
   gem 'timecop'
-  gem 'webdrivers'
+  gem 'webdrivers', "5.2.0"
 end
+
+#gem 'ransack'

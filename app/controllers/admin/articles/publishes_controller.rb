@@ -5,7 +5,6 @@ class Admin::Articles::PublishesController < ApplicationController
   before_action :set_state
 
   def update
-
     if !@article.published_at?
       @article.published_at = Time.current
       @article_state = :published
