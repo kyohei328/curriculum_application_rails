@@ -60,6 +60,7 @@ ja:
         category_id: 'カテゴリー'
         author_id: '著者'
         tag_ids: 'タグ'
+        eyecatch_width: '横幅'
       medium:
         media_type: 'メディアタイプ'
         attachment: 'ファイル'

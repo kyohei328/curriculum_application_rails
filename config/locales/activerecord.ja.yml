@@ -56,5 +56,10 @@ ja:
             password_confirmation:
               blank: 'パスワードを再入力してください'
               confirmation: 'パスワードが異なります'
+        article:
+          # attributes:
+          #   eyecatch_width:
+          #     greater_than: '以上の値にしてください'
+          #     less_than: '以下の値にしてください'
 
 
