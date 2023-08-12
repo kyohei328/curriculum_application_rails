@@ -7,11 +7,29 @@ class AttachmentValidator < ActiveModel::EachValidator
     has_error = false
 
     if options[:maximum]
-      has_error = true unless validate_maximum(record, attribute, value)
+      if value.is_a?(ActiveStorage::Attached::Many)
+        value.each do |one_value|
+          unless validate_maximum(record, attribute, one_value)
+            has_error = true
+            break
+          end
+        end
+      else
+        has_error = true unless validate_maximum(record, attribute, value)
+      end
     end
 
     if options[:content_type]
-      has_error = true unless validate_content_type(record, attribute, value)
+      if value.is_a?(ActiveStorage::Attached::Many)
+        value.each do |one_value|
+          unless validate_content_type(record, attribute, one_value)
+            has_error = true
+            break
+          end
+        end
+      else
+        has_error = true unless validate_content_type(record, attribute, value)
+      end
     end
 
     record.send(attribute).purge if options[:purge] && has_error
@@ -20,6 +38,7 @@ class AttachmentValidator < ActiveModel::EachValidator
   private
 
   def validate_maximum(record, attribute, value)
+    # binding.pry
     if value.byte_size > options[:maximum]
       record.errors[attribute] << (options[:message] || "は#{number_to_human_size(options[:maximum])}以下にしてください")
       false

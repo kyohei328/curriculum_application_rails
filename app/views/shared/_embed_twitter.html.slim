@@ -1,9 +1,4 @@
-ruby:
-  embed = local_assigns[:embed]
-  width = local_assigns[:width] || 853
-  height = local_assigns[:height] || 480
-
+script async="" charset="utf-8" src="https://platform.twitter.com/widgets.js"
 .embed-twitter
   blockquote.twitter-tweet
     a href="#{embed.identifier}"
-  script async="" charset="utf-8" src="https://platform.twitter.com/widgets.js"

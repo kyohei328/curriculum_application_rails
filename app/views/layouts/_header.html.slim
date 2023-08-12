@@ -1,5 +1,47 @@
-header.jumbotron.jumbotron-fluid
-  .container
-    h1 = link_to current_site.name, root_path
-    p.lead = current_site.subtitle
+/ header.jumbotron.jumbotron-fluid
+/   .swiper
+/     .swiper-wrapper
+/       .swiper-slide Slide 1
+/       .swiper-slide Slide 2
+/       .swiper-slide Slide 3
+/     / .swiper-pagination
+/     .swiper-button-prev
+/     .swiper-button-next
+/     / .swiper-scrollbar
+
+/   .container
+/     h1 = link_to current_site.name, root_path
+/     p.lead = current_site.subtitle
+
+header
+  .swiper
+    .swiper-wrapper
+      - if current_site.main_images.present?
+        - current_site.main_images.each do |main_image|
+          = image_tag main_image, class: 'swiper-slide'
+      - else
+        = image_tag '/images/cover.jpg', class: 'swiper-slide'
+    .swiper-pagination
+
+    .container.blog-title
+      h1 = link_to current_site.name, root_path
+      p.lead = current_site.subtitle
+
+javascript:
+    var swiper = new Swiper(".swiper", {
+      spaceBetween: 30,
+      centeredSlides: true,
+      autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
 
