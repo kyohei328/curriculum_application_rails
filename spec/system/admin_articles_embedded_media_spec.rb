@@ -37,7 +37,7 @@ RSpec.describe 'AdminArticlesEmbeddedMedia', type: :system do
         expect(current_path).to eq(admin_article_preview_path(article.uuid)), '更新した記事を正しくプレビューできていません'
         # embedded_urlだと検証しづらいので固定値で確認
         # expect(page).to have_selector("iframe[src='#{embedded_url_twitter}']")
-        sleep 2 # 全体テスト実行時に画面遷移が追いつかないので待機
+        # sleep 2 # 全体テスト実行時に画面遷移が追いつかないので待機
         expect(page).to have_selector(".twitter-tweet"), 'プレビューした記事にTwitterのコンテンツが埋め込まれません'
       end
     end

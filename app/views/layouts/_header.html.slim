@@ -14,7 +14,7 @@
 /     p.lead = current_site.subtitle
 
 header
-  .swiper
+  .swiper-conteiner
     .swiper-wrapper
       - if current_site.main_images.present?
         - current_site.main_images.each do |main_image|
@@ -28,11 +28,11 @@ header
       p.lead = current_site.subtitle
 
 javascript:
-    var swiper = new Swiper(".swiper", {
+    var swiper = new Swiper(".swiper-conteiner", {
       spaceBetween: 30,
       centeredSlides: true,
       autoplay: {
-        delay: 2500,
+        delay: 3000,
         disableOnInteraction: false,
       },
       pagination: {
