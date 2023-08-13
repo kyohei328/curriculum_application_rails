@@ -33,5 +33,9 @@ set :output, "#{Rails.root}/log/cron.log"
 
 #定期実行したい処理を記入
 every 5.minutes do
-  rake 'article_state:update_article_state'
+  rake 'article_state:change_to_published'
+end
+
+every 1.day, at: '9:00 am' do
+  rake 'article_mailer:report_summary_send'
 end
